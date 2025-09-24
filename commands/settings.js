@@ -12,12 +12,12 @@ const settings = {
         default: "regular",
     },
     'pingFormat': {
-        name: 'ping format',
-        description: 'how should the ping be formatted?',
+        name: 'selo mu',
+        description: 'sina wile e selo mu seme?',
         options: [
-            "expanded", "compact", "compact emojiless"
+            "suli", "lili", "lili (sitelen ala)"
         ],
-        default: "expanded",
+        default: "suli",
     },
     'updateNotification': {
         name: 'update notification',

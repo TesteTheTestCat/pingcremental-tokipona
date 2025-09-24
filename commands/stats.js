@@ -5,30 +5,30 @@ const ping = require('../helpers/pingCalc.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('stats')
-        .setDescription('numbers and stuff')
+        .setName('sona')
+        .setDescription('nanpa mute a')
         .setContexts(InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel)
         .addSubcommand(subcommand =>
             subcommand
-                .setName('global')
-                .setDescription('get global stats')
+                .setName('ale')
+                .setDescription('nanpa ale')
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('user')
-                .setDescription('get stats per person')
+                .setName('jan')
+                .setDescription('nanpa jan')
                 .addUserOption(option =>
-                    option.setName('user')
-                        .setDescription('the user to get stats for')
+                    option.setName('jan')
+                        .setDescription('sina wile e sona jan seme?')
                         .setRequired(false)
                 )
         ),
     async execute(interaction) {
-        if (interaction.options.getSubcommand() === 'global') {
+        if (interaction.options.getSubcommand() === 'ale') {
             await interaction.reply(await getGlobalMessage());
             return;
-        } else if (interaction.options.getSubcommand() === 'user') {
-            const user = interaction.options.getUser('user') || interaction.user;
+        } else if (interaction.options.getSubcommand() === 'jan') {
+            const user = interaction.options.getUser('jan') || interaction.user;
             await interaction.reply(await getUserMessage(user.id, interaction));
             return;
         }
@@ -58,16 +58,16 @@ async function getGlobalMessage() {
     const [count, totalScore, ownedScore, totalClicks, blueClicked, blueMissed, luckyFound] = globalPings;
 
     const embed = new EmbedBuilder()
-        .setTitle(`global stats`)
+        .setTitle(`sona ale`)
         .setColor('#bd6fb8')
         .setDescription(
-                `${formatNumber(count)} people have pinged at least once\n` +
-                `${formatNumber(totalScore)} total pts gained\n` +
-                `${formatNumber(ownedScore)} pts currently owned\n` +
-                `${formatNumber(totalClicks)} pings dealt with\n` +
-                `${formatNumber(blueClicked)} blue pings clicked\n` +
-                `${formatNumber(blueMissed)} blue pings missed\n` +
-                `${formatNumber(luckyFound)} lucky pings found`
+                `jan ${formatNumber(count)} li mu\n` +
+                `mu ${formatNumber(totalScore)} li lon\n` +
+                `ale li jo e mu ${formatNumber(ownedScore)}\n` +
+                `mu ${formatNumber(totalClicks)} li pini\n` +
+                `jan ale li luka e mu laso ${formatNumber(blueClicked)}\n` +
+                `jan ale li weka e mu laso ${formatNumber(blueMissed)}\n` +
+                `mu namako ${formatNumber(luckyFound)} li len ala`
         )
         .setTimestamp();
     
@@ -87,7 +87,7 @@ async function getGlobalMessage() {
 
 async function getUserMessage(userId, interaction) {
     const player = await database.Player.findByPk(userId);
-    if (!player) return { content: `<@${userId}> hasn't pinged yet.`, allowedMentions: { parse: [] }, flags: MessageFlags.Ephemeral };
+    if (!player) return { content: `<@${userId}> li mu ala.`, allowedMentions: { parse: [] }, flags: MessageFlags.Ephemeral };
     
     const upgrades = player.upgrades;
 
@@ -100,20 +100,20 @@ async function getUserMessage(userId, interaction) {
     const blueMult = simulatedPing.currentEffects.blueStrength || 1;
 
     const embed = new EmbedBuilder()
-        .setTitle(`personal stats`)
+        .setTitle(`sona jan`)
         .setColor('#6fa7bd')
         .setDescription(
-                `viewing stats for **${await player.getUserDisplay(interaction.client, database)}**\n\n` +
+                `sina lukin e sona **${await player.getUserDisplay(interaction.client, database)}**\n\n` +
                 
                 `${formatNumber(player.totalClicks)} total ping${player.totalClicks === 1 ? '' : 's'}\n` +
                 // show eternity pings if not the same as total
                 `${player.totalClicks !== player.clicks ? `${formatNumber(player.clicks)} ping${player.clicks === 1 ? '' : 's'} this eternity\n` : ''}` +
-                `${formatNumber(player.totalScore)} total pts\n` +
-                `${formatNumber(player.highestScore)} pts in one ping\n` +
-                `${formatNumber(player.bluePings)} blue ping${player.bluePings === 1 ? '' : 's'} clicked\n` +
-                `${formatNumber(player.bluePingsMissed)} missed blue ping${player.bluePingsMissed === 1 ? '' : 's'} (${missRate}% miss rate)\n` +
-                `${formatNumber(player.luckyPings)} lucky ping${player.luckyPings === 1 ? '' : 's'}\n` +
-                `${formatNumber(player.highestBlueStreak)} highest blue ping streak\n` +
+                `mu ale ona li ${formatNumber(player.totalScore)}\n` +
+                `ona li pali e mani ${formatNumber(player.highestScore)} kepeken mu wan\n` +
+                `ona li luka e mu laso ${formatNumber(player.bluePings)}\n` +
+                `ona li weka e mu laso${formatNumber(player.bluePingsMissed)} (li weka e ${missRate}%)\n` +
+                `ona li lukin e mu namako ${formatNumber(player.luckyPings)}\n` +
+                `linluwi pi mu laso ona li ${formatNumber(player.highestBlueStreak)}\n` +
                 `\n` +
                 `${upgrades.bluePingChance < 0 ? `0%` : `${(bluePingChance).toFixed(1)}%`} blue ping chance\n` + 
                 `${blueMult.toFixed(2)}x blue ping strength = ${(blueMult*15).toFixed(2)}x pts on a blue ping`
