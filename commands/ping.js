@@ -8,13 +8,13 @@ const database = require('../helpers/database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('ping!')
+        .setName('mu!')
+        .setDescription('mu!')
         .setContexts(InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel),
     async execute(interaction) {
         const again = new ButtonBuilder()
             .setCustomId('ping:again')
-            .setLabel('ping again!')
+            .setLabel('mu sin!')
             .setStyle(ButtonStyle.Secondary);
         const row = new ActionRowBuilder()
             .addComponents(again);
@@ -48,16 +48,16 @@ async function pingResponse(interaction, isSuper = false) {
     const developmentMode = process.argv.includes('--dev') || process.argv.includes('-d');
     if (developmentMode && interaction.user.id !== ownerId) {
         return await interaction.update({
-            content: "there's some important dev stuff going on! pings are disabled for now, but will (hopefully) be back shortly.",
+            content: "sina ken ala mu tan ni: jan lawa li pali e ilo ni, o awen a!",
             components: [new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
                     .setCustomId('ping:again')
-                    .setLabel('ping again!')
+                    .setLabel('ken ala mu sin...')
                     .setStyle(ButtonStyle.Secondary)
                     .setDisabled(true),
                 new ButtonBuilder()
                     .setCustomId('ping:delete')
-                    .setLabel('dang!')
+                    .setLabel('ike...')
                     .setStyle(ButtonStyle.Secondary))
             ],
         })
@@ -66,7 +66,7 @@ async function pingResponse(interaction, isSuper = false) {
     let againId = 'ping:again';
     const again = new ButtonBuilder()
         .setCustomId(againId)
-        .setLabel('ping again!')
+        .setLabel('mu sin!')
         .setStyle(ButtonStyle.Secondary);
     let row = new ActionRowBuilder();
 
@@ -104,7 +104,7 @@ async function pingResponse(interaction, isSuper = false) {
         playerProfile.bluePings += 1;
         const superPing = new ButtonBuilder()
             .setCustomId('ping:super')
-            .setLabel(`blue ping!${isSuper ? ` x${currentEffects.blueCombo + 1}` : ''}`)
+            .setLabel(`mu laso!${isSuper ? ` x${currentEffects.blueCombo + 1}` : ''}`)
             .setStyle(ButtonStyle.Primary);
         rowComponents.push(superPing);
     }
@@ -160,7 +160,7 @@ async function pingResponse(interaction, isSuper = false) {
     // show upgrade popup after 150 clicks
     if (playerProfile.totalClicks === 150) {
         const button = new ButtonBuilder()
-            .setLabel('that looks important...')
+            .setLabel('n...')
             .setStyle(ButtonStyle.Secondary)
             .setCustomId('ping:empty')
             .setDisabled(true);
@@ -169,7 +169,7 @@ async function pingResponse(interaction, isSuper = false) {
         return await interaction.update({
             content:
                 `${pingMessage}
-you have a lot of pts... why don't you go spend them over in </upgrade:1360377407109861648>?`, // TODO: change to dynamically use ID
+sina jo e mani mute... o kama lon </upgrade:1360377407109861648>...`, // TODO: change to dynamically use ID
             components: [disabledRow]
         })
     }
@@ -178,7 +178,7 @@ you have a lot of pts... why don't you go spend them over in </upgrade:136037740
         row = new ActionRowBuilder()
             .addComponents(new ButtonBuilder()
                 .setCustomId('ping:again')
-                .setLabel('whoa!')
+                .setLabel('a!')
                 .setStyle(ButtonStyle.Success)
                 .setDisabled(true),
             );
@@ -210,7 +210,7 @@ you have a lot of pts... why don't you go spend them over in </upgrade:136037740
         await interaction.update({
             content:
                 `${pingMessage}
-\`${formatNumber(playerProfile.score, true, 4)} pts\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
+\`${formatNumber(playerProfile.score, true, 4)} mani\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
             components: [row]
         });
     } catch (error) {
@@ -218,8 +218,8 @@ you have a lot of pts... why don't you go spend them over in </upgrade:136037740
         if (error.code == 200000) {
             await interaction.update({
                 content:
-                    `this ping message is non-offensive, and contains nothing that will anger AutoMod! (${ping}ms)
-\`${formatNumber(playerProfile.score, true, 4)} pts\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
+                    `mu ni li jo e ike ala, e jaki ala tawa ilo AutoMod! (${ping}ms)
+\`${formatNumber(playerProfile.score, true, 4)} mani\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
                 components: [row]
             });
         } else {
