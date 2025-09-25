@@ -7,8 +7,8 @@ module.exports = {
     },
     getDetails() {
         return {
-            description: "gain __+2^(level-1)__ pts",
-            name: "pinginomial",
+            description: "sina kama jo e mani __+2^(level-1)__",
+            name: "mu li kama suli",
             emoji: getEmoji('upgrade_pinginomial', "📈"),
         }
     },

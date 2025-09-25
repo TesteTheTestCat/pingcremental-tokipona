@@ -12,13 +12,13 @@ module.exports = {
     },
     getDetails() {
         return {
-            description: "gain __+2__ pts when ping is less/equal to 50",
-            name: "prioritize usability",
+            description: "mu li 50 anu lili la ni li __+2__ e mu",
+            name: "o pona e kepeken",
             emoji: getEmoji('upgrade_usability', "🖥️"),
         }
     },
     getEffectString(level) {
-        return `+${level*2} pts`
+        return `mani +${level*2}`
     },
     getEffect(level, context) {
         return {

@@ -7,13 +7,13 @@ module.exports = {
     },
     getDetails() {
         return {
-            description: "gain __+0.6__ pts per ping for every __350__ total clicks",
-            name: "inpingity",
+            description: "sina luka sin __350__ la sina kama jo e mani __+0.6__",
+            name: "mu ale a",
             emoji: getEmoji('upgrade_inpingity', "♾️"),
         }
     },
     getEffectString(level) {
-        return `+${(level*0.6).toFixed(1)} per ${maxClicks(level)} clicks`
+        return `${maxClicks(level)} la +${(level*0.6).toFixed(1)}`
     },
     getEffect(level, context) {
         return {

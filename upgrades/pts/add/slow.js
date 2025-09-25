@@ -7,13 +7,13 @@ module.exports = {
     },
     getDetails() {
         return {
-            description: "each ping gives __+1__ pt",
-            name: "slow internet",
+            description: "mu li pana e mani __+1__",
+            name: "linluwi li tawa lili",
             emoji: getEmoji('upgrade_slow', "🕓"),
         }
     },
     getEffectString(level) {
-        return `+${level} pt${level === 1 ? "" : "s"}`
+        return `mani +${level}`
     },
     getEffect(level, context) {
         return {

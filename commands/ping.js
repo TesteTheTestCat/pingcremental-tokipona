@@ -13,7 +13,7 @@ module.exports = {
         .setContexts(InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel),
     async execute(interaction) {
         const again = new ButtonBuilder()
-            .setCustomId('ping:again')
+            .setCustomId('mu:again')
             .setLabel('mu sin!')
             .setStyle(ButtonStyle.Secondary);
         const row = new ActionRowBuilder()
@@ -48,22 +48,22 @@ async function pingResponse(interaction, isSuper = false) {
     const developmentMode = process.argv.includes('--dev') || process.argv.includes('-d');
     if (developmentMode && interaction.user.id !== ownerId) {
         return await interaction.update({
-            content: "sina ken ala mu tan ni: jan lawa li pali e ilo ni, o awen a!",
+            content: "sina ken ala mu tan ni: jan pali li pali e ilo ni, o awen a!",
             components: [new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
-                    .setCustomId('ping:again')
+                    .setCustomId('mu:again')
                     .setLabel('ken ala mu sin...')
                     .setStyle(ButtonStyle.Secondary)
                     .setDisabled(true),
                 new ButtonBuilder()
-                    .setCustomId('ping:delete')
+                    .setCustomId('mu:delete')
                     .setLabel('ike...')
                     .setStyle(ButtonStyle.Secondary))
             ],
         })
     }
 
-    let againId = 'ping:again';
+    let againId = 'mu:again';
     const again = new ButtonBuilder()
         .setCustomId(againId)
         .setLabel('mu sin!')
@@ -72,7 +72,7 @@ async function pingResponse(interaction, isSuper = false) {
 
     if (interaction.client.ws.ping === -1 && !developmentMode) { // bot just restarted
         row.addComponents(again, new ButtonBuilder()
-            .setCustomId('ping:unknown')
+            .setCustomId('mu:unknown')
             .setLabel('unknown ms?')
             .setStyle(ButtonStyle.Secondary));
         return await interaction.update({ // return early 
@@ -103,7 +103,7 @@ async function pingResponse(interaction, isSuper = false) {
     if (currentEffects.spawnedSuper) {
         playerProfile.bluePings += 1;
         const superPing = new ButtonBuilder()
-            .setCustomId('ping:super')
+            .setCustomId('mu:super')
             .setLabel(`mu laso!${isSuper ? ` x${currentEffects.blueCombo + 1}` : ''}`)
             .setStyle(ButtonStyle.Primary);
         rowComponents.push(superPing);
@@ -126,7 +126,7 @@ async function pingResponse(interaction, isSuper = false) {
     if (!isSuper) {
         let missed = false;
         for (const messageButton of interaction.message.components[0].components) { // check every button in the first row
-            if (messageButton.data.custom_id === 'ping:super') {
+            if (messageButton.data.custom_id === 'mu:super') {
                 missed = true;
                 break;
             }
@@ -162,7 +162,7 @@ async function pingResponse(interaction, isSuper = false) {
         const button = new ButtonBuilder()
             .setLabel('n...')
             .setStyle(ButtonStyle.Secondary)
-            .setCustomId('ping:empty')
+            .setCustomId('mu:empty')
             .setDisabled(true);
         const disabledRow = new ActionRowBuilder().addComponents(button);
 
@@ -177,7 +177,7 @@ sina jo e mani mute... o kama lon </upgrade:1360377407109861648>...`, // TODO: c
     if (currentEffects.rare) {
         row = new ActionRowBuilder()
             .addComponents(new ButtonBuilder()
-                .setCustomId('ping:again')
+                .setCustomId('mu:again')
                 .setLabel('a!')
                 .setStyle(ButtonStyle.Success)
                 .setDisabled(true),
@@ -210,7 +210,7 @@ sina jo e mani mute... o kama lon </upgrade:1360377407109861648>...`, // TODO: c
         await interaction.update({
             content:
                 `${pingMessage}
-\`${formatNumber(playerProfile.score, true, 4)} mani\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
+\`mani ${formatNumber(playerProfile.score, true, 4)}\` (**\`+${formatNumber(score, true, 3)}\`**)\n-# ${displayDisplay}`,
             components: [row]
         });
     } catch (error) {

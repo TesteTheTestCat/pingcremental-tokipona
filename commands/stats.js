@@ -77,8 +77,8 @@ async function getGlobalMessage() {
             new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                        .setCustomId(`stats:refresh-global`)
-                        .setLabel('refresh')
+                        .setCustomId(`sona:refresh-global`)
+                        .setLabel('lukin sin')
                         .setStyle(ButtonStyle.Secondary)
                 )
         ],
@@ -125,8 +125,8 @@ async function getUserMessage(userId, interaction) {
             new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                        .setCustomId(`stats:refresh-${userId}`)
-                        .setLabel('refresh')
+                        .setCustomId(`sona:refresh-${userId}`)
+                        .setLabel('lukin sin')
                         .setStyle(ButtonStyle.Secondary)
                 )
         ],
