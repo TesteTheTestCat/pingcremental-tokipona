@@ -7,15 +7,15 @@ const formatNumber = require('./../helpers/formatNumber.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('upgrade')
-        .setDescription('get stronger pings')
+        .setName('pali')
+        .setDescription('o pali e mu sina!')
         .setContexts(InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel),
     async execute(interaction) {
         await interaction.reply(await getEditMessage(interaction, UpgradeTypes.ADD_BONUS, 1));
     },
     buttons: {
         delete: (async interaction => {
-            await interaction.update({ content: "(bye!)", components: [] });
+            await interaction.update({ content: "(mi weka!)", components: [] });
             await interaction.deleteReply(interaction.message);
         }),
         category: (async (interaction, newCategory) => {
@@ -77,15 +77,15 @@ module.exports = {
         }),
         custommb: (async interaction => {
             const modal = new ModalBuilder()
-                .setCustomId('upgrade:custommb')
+                .setCustomId('pali:custommb')
                 .setTitle('custom multi-buy')
                 .addComponents(
                     new ActionRowBuilder().addComponents(
                         new TextInputBuilder()
                             .setCustomId('value')
-                            .setLabel('upgrade amount')
+                            .setLabel('nanpa pali')
                             .setStyle(TextInputStyle.Short)
-                            .setPlaceholder('enter a number or "MAX"...')
+                            .setPlaceholder('o pana e nanpa, anu "MAX"')
                     )
                 );
             await interaction.showModal(modal);
@@ -120,13 +120,13 @@ module.exports = {
                 const msg = ['dang!', 'oops!', 'awh!', 'ack!', 'sad!']
 
                 const button = new ButtonBuilder()
-                    .setCustomId('upgrade:delete')
+                    .setCustomId('pali:delete')
                     .setLabel(msg[Math.floor(Math.random() * msg.length)]) // random sad message
                     .setStyle(ButtonStyle.Secondary)
 
                 await interaction.update(await getEditMessage(interaction, upgradeClass.type(), displaySetting)); // fix dropdown remaining after failed upgrade
                 return await interaction.followUp({
-                    content: `you dont have enough \`pts\` to afford that! (missing \`${formatNumber(price - playerData.score, true)} pts\`)`,
+                    content: `sina ken ala esun e ni! (mani \`${formatNumber(price - playerData.score, true)}\` li lon ala)`,
                     components: [new ActionRowBuilder().addComponents(button)],
                     flags: ephemeral
                 })
@@ -145,11 +145,11 @@ module.exports = {
                         new ActionRowBuilder().addComponents(
                             new ButtonBuilder()
                                 .setCustomId('upgrade:eternity')
-                                .setLabel('i\'m ready.')
+                                .setLabel('mi wile.')
                                 .setStyle(ButtonStyle.Success),
                             new ButtonBuilder()
                                 .setCustomId('upgrade:delete')
-                                .setLabel('wait, no')
+                                .setLabel('o awen, mi wile ala')
                                 .setStyle(ButtonStyle.Secondary)
                         )
                     ]
@@ -163,10 +163,10 @@ module.exports = {
             await playerData.save();
             let followupType = playerData.settings.upgradeFollowup;
 
-            const msg = ['sweet!', 'nice!', 'sick!', 'cool!', 'neat!', 'nifty!', 'yippee!', 'awesome!'];
+            const msg = ['pona!', 'mu!', 'wawa!', 'oke!', 'nja!'];
             let pickedMsg = msg[Math.floor(Math.random() * msg.length)];
-            if (pickedMsg === 'awesome!' && Math.random() < 0.001) {
-                pickedMsg = 'awesome sauce 🐴';
+            if (pickedMsg === 'nja!' && Math.random() < 0.001) {
+                pickedMsg = 'nja nja nja :3 🐱🐈';
                 await awardBadge(interaction.user.id, 'awesome sauce :horse:', interaction.client);
 
                 // force regular followup since it's rare
@@ -175,7 +175,7 @@ module.exports = {
             }
 
             const button = new ButtonBuilder()
-                .setCustomId('upgrade:delete')
+                .setCustomId('pali:delete')
                 .setLabel(pickedMsg) // random happy message
                 .setStyle(ButtonStyle.Success)
 
@@ -183,7 +183,7 @@ module.exports = {
 
             if (followupType !== 'none') {
                 return await interaction.followUp({
-                    content: `upgraded **${upgradeClass.getDetails().name}** to level ${playerUpgradeLevel + levels}! you've \`${formatNumber(playerData.score, true, 4)} pts\` left.`,
+                    content: `sina pali e **${upgradeClass.getDetails().name}** tawa wawa ${playerUpgradeLevel + levels} a! sina awen jo e \`mani ${formatNumber(playerData.score, true, 4)}\``,
                     components: [new ActionRowBuilder().addComponents(button)],
                     flags: ephemeral
                 })
@@ -272,11 +272,11 @@ async function getEditMessage(interaction, category, buySetting) {
     const [playerData, _created] = await database.Player.findOrCreate({ where: { userId: interaction.user.id } })
     if (playerData.totalClicks < 150 && !playerData.clicks >= 150) { // prevent upgrading before 150 clicks
         const button = new ButtonBuilder()
-            .setCustomId('upgrade:delete')
-            .setLabel('oh... okay')
+            .setCustomId('pali:delete')
+            .setLabel('a...')
             .setStyle(ButtonStyle.Secondary)
         return {
-            content: `*upgrades? what upgrades? you should go back to pinging.*\n-# (${playerData.clicks}/150)`,
+            content: `*pali? pali seme? o awen mu a.*\n-# (${playerData.clicks}/150)`,
             components: [new ActionRowBuilder().addComponents(button)]
         }
     }
@@ -286,7 +286,7 @@ async function getEditMessage(interaction, category, buySetting) {
     for (const [_key, cat] of Object.entries(UpgradeTypes)) {
         if (cat === UpgradeTypes.PRESTIGE && !playerData.upgrades?.pingularity) continue; // prevent seing prestige tab before unlock
         const button = new ButtonBuilder()
-            .setCustomId(`upgrade:category-${cat}`)
+            .setCustomId(`pali:category-${cat}`)
             .setLabel(cat)
             .setStyle(ButtonStyle.Secondary)
             .setDisabled(category === cat)
@@ -296,18 +296,18 @@ async function getEditMessage(interaction, category, buySetting) {
     const pUpgrades = playerData.upgrades
 
     const select = new StringSelectMenuBuilder()
-        .setCustomId('upgrade:buy')
-        .setPlaceholder('pick an upgrade')
-    let description = `you have **__\`${formatNumber(playerData.score, true, 4)} pts\`__** to spend...\nbuying **x${buySetting}** upgrade${buySetting === 1 ? '' : 's'} per click...\n`
+        .setCustomId('pali:buy')
+        .setPlaceholder('pali a...')
+    let description = `sina jo e **__\`mani ${formatNumber(playerData.score, true, 4)}\`__**\nsina esun e pali **x${buySetting}**\n`
     const embed = new EmbedBuilder()
         .setTitle("upgrades")
         .setColor("#73c9ae")
 
-    const multiBuys = [1,5,25,'MAX']
+    const multiBuys = [1,5,20,'MAX']
     const multiBuyButtons = []
     for (const multiBuy of multiBuys) {
         const button = new ButtonBuilder()
-            .setCustomId(`upgrade:multibuy-${multiBuy}`)
+            .setCustomId(`pali:multibuy-${multiBuy}`)
             .setLabel(`x${multiBuy}`)
             .setStyle(multiBuy === buySetting ? ButtonStyle.Primary : ButtonStyle.Secondary)
             .setDisabled(multiBuy === buySetting)
@@ -315,8 +315,8 @@ async function getEditMessage(interaction, category, buySetting) {
     }
     multiBuyButtons.push(
         new ButtonBuilder()
-            .setCustomId('upgrade:custommb')
-            .setLabel('custom...')
+            .setCustomId('pali:custommb')
+            .setLabel('ante...')
             .setStyle(ButtonStyle.Secondary)
     )
     const multiBuyRow = new ActionRowBuilder()
@@ -333,13 +333,13 @@ async function getEditMessage(interaction, category, buySetting) {
         if (upgrade.type() != category) continue; // wrong category
         if (!upgrade.isBuyable({ upgrades: pUpgrades, clicks: playerData.clicks, totalClicks: playerData.totalClicks, bp: playerData.bp })) continue; // hidden
         if (upgrade.getPrice(upgradeLevel) === null) { // maxed out
-            description += `\n**${upgrade.getDetails().emoji} ${upgrade.getDetails().name} (MAX)**\n${upgrade.getDetails().description}\nCurrently ${upgrade.getEffectString(upgradeLevel)}`
+            description += `\n**${upgrade.getDetails().emoji} ${upgrade.getDetails().name} (ale)**\n${upgrade.getDetails().description}\nni li ${upgrade.getEffectString(upgradeLevel)}`
             continue;
         }
         
         const {price, levels} = getMultiBuyCost(buySetting, upgrade, playerData.score, upgradeLevel);
 
-        description += `\n**${upgrade.getDetails().emoji} ${upgrade.getDetails().name} (Lv${upgradeLevel})**
+        description += `\n**${upgrade.getDetails().emoji} ${upgrade.getDetails().name} (wawa${upgradeLevel})**
 ${upgrade.getDetails().description}
 ${upgrade.getEffectString(upgradeLevel)} -> ${upgrade.getEffectString(upgradeLevel + levels)} for \`${formatNumber(price, true)} pts\`${levels > 1 ? ` (*${levels} levels*)` : ''}`
 
@@ -354,7 +354,7 @@ ${upgrade.getEffectString(upgradeLevel)} -> ${upgrade.getEffectString(upgradeLev
     if (select.options.length === 0) {
         select.addOptions(
             new StringSelectMenuOptionBuilder()
-                .setLabel('upgrades are maxed!')
+                .setLabel('ale li wawa ale!')
                 .setValue('none')
                 .setDefault(true)
         )
